@@ -1,21 +1,11 @@
-const express = require("express");
-const serveStatic = require("serve-static");
-const path = require("path");
-const history = require("connect-history-api-fallback");
-const compression = require("compression");
-
+const express = require('express');
+const path = require('path');
 const app = express();
 
-const port =  5000;
+app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(compression());
-app.use(history());
-
-app.use("/", serveStatic(path.join(`${__dirname}/dist/`)));
-// nah itu pathnya lu ganti aja brok sesuai hasil build punya lu.
-// lu serve file ini deh.
-// di line 3 klo lu butuh env ya klo ga butuh skip aja
-
-app.listen(port, () => {
-    console.log('Nyala boss');
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+app.listen(9000);
